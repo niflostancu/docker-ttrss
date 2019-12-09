@@ -1,0 +1,4 @@
+#!/usr/bin/execlineb -P
+
+s6-setuidgid nginx /usr/bin/php /var/www/update_daemon2.php
+

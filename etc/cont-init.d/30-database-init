@@ -1,0 +1,6 @@
+#!/usr/bin/execlineb -P
+with-contenv
+
+cd /var/www/
+/usr/local/bin/ttrss-init-db.php
+
