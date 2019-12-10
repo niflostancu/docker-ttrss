@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ttrss.fullname" . }}
+  labels:
+    {{- include "ttrss.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ttrss.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ttrss.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{- if .Values.selfUrlPath }}
+            - {name: "SELF_URL_PATH", value: {{ .Values.selfUrlPath | quote }} }
+          {{- end }}
+          {{- if .Values.databaseHost }}
+            - {name: "DB_HOST", value: {{ .Values.databaseHost | quote }} }
+          {{- end }}
+          {{- if .Values.databaseType }}
+            - {name: "DB_TYPE", value: {{ .Values.databaseType | quote }} }
+          {{- end }}
+          {{- if .Values.databasePort }}
+            - {name: "DB_PORT", value: {{ .Values.databasePort | quote }} }
+          {{- end }}
+          {{- if .Values.databaseName }}
+            - {name: "DB_NAME", value: {{ .Values.databaseName | quote }} }
+          {{- end }}
+          {{- if .Values.databaseUser }}
+            - {name: "DB_USER", value: {{ .Values.databaseUser | quote }} }
+          {{- end }}
+            - name: DB_PASS
+              {{- if and (hasKey .Values.databaseSecret "name") (.Values.databaseSecret.name) }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.databaseSecret.name | quote }}
+                  key: {{ .Values.databaseSecret.key | quote }}
+              {{- else }}
+              value: {{ default "" .Values.databasePassword | quote }}
+              {{- end }}
+          {{- if .Values.timezone }}
+            - name: TZ
+              value: {{ .Values.timezone }}
+          {{- end }}
+          {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
+{{- if .Values.extraVolumeMounts }}
+{{ toYaml .Values.extraVolumeMounts | indent 10 }}
+{{- end }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.extraVolumes }}
+      volumes:
+{{- if .Values.extraVolumes }}
+{{ toYaml .Values.extraVolumes | indent 6 }}
+{{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

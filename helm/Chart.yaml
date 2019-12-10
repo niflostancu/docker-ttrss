@@ -1,0 +1,15 @@
+apiVersion: v2
+name: ttrss
+description: Self-hosted RSS reader
+type: application
+
+version: 0.1
+appVersion: git
+
+sources:
+  - https://github.com/niflostancu/docker-ttrss
+  - https://github.com/niflostancu/k8s-personal-nas
+maintainers:
+  - name: Stancu Florin
+    email: niflostancu@gmail.com
+

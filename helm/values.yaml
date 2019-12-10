@@ -1,0 +1,83 @@
+# Default values for ttrss.
+
+replicaCount: 1
+
+image:
+  repository: niflostancu/ttrss
+  tag: ""
+  pullPolicy: Always
+
+imagePullSecrets: []
+name: ""
+fullname: ""
+
+podSecurityContext: {}
+securityContext: {}
+
+databaseHost: "mysql"
+databasePort: "3306"
+databaseType: "mysql"
+databaseName: "ttrss"
+databaseUser: "ttrss"
+databasePassword: ""
+# alternative for password: use a k8s secret
+databaseSecret: {}
+  # name: "mysql-ttrss"
+  # key: "mysql-password"
+
+extraVolumes: {}
+  # - name: plugins
+  #   emptyDir: {}
+extraVolumeMounts: {}
+  # - name: extras
+  #   mountPath: /var/www/plugins.local/
+  #   readOnly: true
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 3
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ttrss.local
+      paths: []
+  tls: []
+  #  - secretName: ttrss-tls
+  #    hosts:
+  #      - ttrss.local
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Custom mysql configuration files
+configurationFiles: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
