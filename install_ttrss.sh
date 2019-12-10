@@ -16,10 +16,10 @@ for PLUGIN in "${PLUGINS[@]}"; do
 	IFS=';' read -ra _PLUG <<< "$PLUGIN"
 	curl -sSL "${_PLUG[0]}" -o "/tmp/${_PLUG[2]}.tar.gz"
 	# only extract the plugin-named subdirectory
-	FILES=("*/${_PLUG[2]}")
-	[[ "${_PLUG[1]}" == "themes" ]] && FILES+=("${_PLUG[2]}.css") || true
+	FILES=("*/${_PLUG[2]}*")
+	#[[ "${_PLUG[1]}" == "themes" ]] && FILES=("*/${_PLUG[2]}*") || true
 	tar xpf "/tmp/${_PLUG[2]}.tar.gz" --strip-components=1 \
-		-C /var/www/${_PLUG[1]}/ --wildcards "*/${_PLUG[2]}"
+		-C /var/www/${_PLUG[1]}/ --wildcards "${FILES[@]}"
 done
 
 cd "$DEST"
