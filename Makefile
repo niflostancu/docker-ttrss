@@ -1,8 +1,10 @@
 # Docker image Makefile
 
+VERSION=$(shell cat VERSION)
+
 IMAGE_NAME = ttrss
-IMAGE_TAGS ?= v0.3
-IMAGE_PREFIX ?= niflostancu/
+IMAGE_TAGS = $(VERSION)
+IMAGE_PREFIX = niflostancu/
 FULL_IMAGE_NAME=$(IMAGE_PREFIX)$(IMAGE_NAME)
 
 -include local.mk
