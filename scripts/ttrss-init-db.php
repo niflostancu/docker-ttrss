@@ -5,43 +5,13 @@ $confpath = '/var/www/config.php';
 $config = array();
 
 // path to ttrss
-$config['SELF_URL_PATH'] = env('SELF_URL_PATH', 'http://localhost');
-if (getenv('DB_TYPE') !== false) {
-    $config['DB_TYPE'] = getenv('DB_TYPE');
-} elseif (getenv('DB_PORT_5432_TCP_ADDR') !== false) {
-    // postgres container linked
-    $config['DB_TYPE'] = 'pgsql';
-    $eport = 5432;
-} elseif (getenv('DB_PORT_3306_TCP_ADDR') !== false) {
-    // mysql container linked
-    $config['DB_TYPE'] = 'mysql';
-    $eport = 3306;
-}
-if (!empty($eport)) {
-    $config['DB_HOST'] = env('DB_PORT_' . $eport . '_TCP_ADDR');
-    $config['DB_PORT'] = env('DB_PORT_' . $eport . '_TCP_PORT');
-} elseif (getenv('DB_PORT') === false) {
-    error('The env DB_PORT does not exist. Make sure to run with "--link mypostgresinstance:DB"');
-} elseif (is_numeric(getenv('DB_PORT')) && getenv('DB_HOST') !== false) {
-    // numeric DB_PORT provided; assume port number passed directly
-    $config['DB_HOST'] = env('DB_HOST');
-    $config['DB_PORT'] = env('DB_PORT');
-    if (empty($config['DB_TYPE'])) {
-        switch ($config['DB_PORT']) {
-            case 3306:
-                $config['DB_TYPE'] = 'mysql';
-                break;
-            case 5432:
-                $config['DB_TYPE'] = 'pgsql';
-                break;
-            default:
-                error('Database on non-standard port ' . $config['DB_PORT'] . ' and env DB_TYPE not present');
-        }
-    }
-}
-$config['DB_NAME'] = env('DB_NAME', 'ttrss');
-$config['DB_USER'] = env('DB_USER', 'ttrss');
-$config['DB_PASS'] = env('DB_PASS', '');
+// $config['SELF_URL_PATH'] = env('TTRSS_SELF_URL_PATH', 'http://localhost');
+$config['DB_TYPE'] = env('TTRSS_DB_TYPE', "pgsql");
+$config['DB_HOST'] = env('TTRSS_DB_HOST', "db");
+$config['DB_PORT'] = env('TTRSS_DB_PORT', "5432");
+$config['DB_NAME'] = env('TTRSS_DB_NAME', 'ttrss');
+$config['DB_USER'] = env('TTRSS_DB_USER', 'ttrss');
+$config['DB_PASS'] = env('TTRSS_DB_PASS', '');
 $checkPassed = false;
 $timeout = 30; // seconds
 while ($timeout > 0) {
@@ -70,15 +40,12 @@ catch (PDOException $e) {
     }
     unset($pdo);
 }
-// write config.php
-$contents = file_get_contents($confpath);
-foreach ($config as $name => $value) {
-    $contents = preg_replace('/(define\s*\(\'' . $name . '\',\s*)(.*)(\);)/',
-        '$1' . addcslashes(var_export($value, true), "\\$") . '$3', $contents);
-}
-$contents .= PHP_EOL . "define('_SKIP_SELF_URL_PATH_CHECKS', true);" . PHP_EOL;
-file_put_contents($confpath, $contents);
-
+// // write config.php
+// $contents = file_get_contents($confpath);
+// foreach ($config as $name => $value) {
+//     $contents .= "putenv(\"$name=$value\");\n";
+// }
+// file_put_contents($confpath, $contents);
 
 function env($name, $default = null)
 {
