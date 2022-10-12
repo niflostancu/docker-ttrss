@@ -1,6 +1,5 @@
 # TinyTinyRSS (nginx based) image for personal cloud
 FROM niflostancu/server-base
-MAINTAINER Florin Stancu <niflostancu@gmail.com>
 
 ARG TTRSS_VERSION="master"
 
@@ -11,11 +10,15 @@ RUN useradd -u $WWW_UID -s /bin/false nginx
 RUN echo "**** installing dependencies ****" && \
 	apk --update upgrade && \
     apk --update --no-cache add \
-        nginx php7-fpm php7-cli php7 php7-curl php7-opcache php7-gd php7-json \
-        php7-pcntl php7-fileinfo php7-xml php7-posix php7-session php7-pgsql \
-        php7-mysqli php7-pdo php7-pdo_pgsql php7-pdo_mysql php7-mcrypt \
-        php7-dom php7-mbstring php7-iconv php7-intl git ca-certificates && \
-	apk add --no-cache --virtual .build-dependencies curl tar
+		nginx php81 php81-fpm php81-cli \
+		php81-pdo php81-gd php81-pgsql php81-pdo_pgsql php81-pdo_mysql \
+		php81-mbstring php81-intl php81-xml php81-curl php81-session \
+		php81-tokenizer php81-dom php81-fileinfo php81-ctype php81-json \
+		php81-iconv php81-pcntl php81-posix php81-zip php81-exif \
+		php81-openssl \
+	git ca-certificates && \
+	apk add --no-cache --virtual .build-dependencies curl tar && \
+	ln -s /usr/bin/php81 /usr/bin/php
 
 ADD install_ttrss.sh /tmp/install_ttrss.sh
 RUN echo "**** installing ttrss and plugins ****" && \

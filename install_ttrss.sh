@@ -9,9 +9,8 @@ PLUGINS=(
 	"https://github.com/levito/tt-rss-feedly-theme/archive/master.tar.gz;themes;feedly"
 )
 
-curl -sSL https://git.tt-rss.org/git/tt-rss/archive/${TTRSS_VERSION}.tar.gz \
-	-o "/tmp/ttrss.tar.gz"
-tar xpf "/tmp/ttrss.tar.gz" --strip-components 1 -C "$DEST/"
+rm -rf "$DEST"
+git clone https://git.tt-rss.org/fox/tt-rss.git/ "$DEST"
 
 for PLUGIN in "${PLUGINS[@]}"; do
 	IFS=';' read -ra _PLUG <<< "$PLUGIN"
@@ -39,6 +38,6 @@ for PLUGIN in "${PLUGINS[@]}"; do
 done
 
 cd "$DEST"
-cp config.php-dist config.php
+cp -f config.php-dist config.php
 chown nginx:nginx /var/www -R
 

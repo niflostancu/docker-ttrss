@@ -1,4 +1,4 @@
-#!/usr/bin/env php7
+#!/usr/bin/env php
 <?php
 // ttrss database initialization script
 $confpath = '/var/www/config.php';
@@ -12,6 +12,8 @@ $config['DB_PORT'] = env('TTRSS_DB_PORT', "5432");
 $config['DB_NAME'] = env('TTRSS_DB_NAME', 'ttrss');
 $config['DB_USER'] = env('TTRSS_DB_USER', 'ttrss');
 $config['DB_PASS'] = env('TTRSS_DB_PASS', '');
+// $config['SELF_URL_PATH'] = env('TTRSS_SELF_URL_PATH', '');
+
 $checkPassed = false;
 $timeout = 30; // seconds
 while ($timeout > 0) {
@@ -40,21 +42,20 @@ catch (PDOException $e) {
     }
     unset($pdo);
 }
-// // write config.php
-// $contents = file_get_contents($confpath);
+// write config.php
+// $contents = file_get_contents($confpath) . "\n";
 // foreach ($config as $name => $value) {
-//     $contents .= "putenv(\"$name=$value\");\n";
+//     $cfg_key = 'TTRSS_' . $name;
+//     $contents .= "putenv(\"${cfg_key}=$value\");\n";
 // }
 // file_put_contents($confpath, $contents);
 
 function env($name, $default = null)
 {
     $v = getenv($name) ?: $default;
-    
     if ($v === null) {
         error('The env ' . $name . ' does not exist');
     }
-    
     return $v;
 }
 function error($text)
