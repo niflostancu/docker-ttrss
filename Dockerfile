@@ -17,8 +17,7 @@ RUN echo "**** installing dependencies ****" && \
 		php81-iconv php81-pcntl php81-posix php81-zip php81-exif \
 		php81-openssl \
 	git ca-certificates && \
-	apk add --no-cache --virtual .build-dependencies curl tar && \
-	ln -s /usr/bin/php81 /usr/bin/php
+	apk add --no-cache --virtual .build-dependencies curl tar
 
 ADD install_ttrss.sh /tmp/install_ttrss.sh
 RUN echo "**** installing ttrss and plugins ****" && \
