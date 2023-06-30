@@ -2,6 +2,7 @@
 FROM niflostancu/server-base
 
 ARG TTRSS_VERSION="master"
+ARG TARGETPLATFORM
 
 ENV WWW_UID=1000
 RUN useradd -u $WWW_UID -s /bin/false nginx
