@@ -28,10 +28,9 @@ RUN echo "**** installing ttrss and plugins ****" && \
 	rm -rf /tmp/*
 
 # environments and their defaults
-ENV SELF_URL_PATH http://localhost
-ENV DB_NAME ttrss
-ENV DB_USER ttrss
-ENV DB_PASS ttrss
+ENV TTRSS_SELF_URL_PATH http://localhost/
+ENV TTRSS_DB_NAME ttrss
+ENV TTRSS_DB_USER ttrss
 
 # expose nginx HTTP
 EXPOSE 80

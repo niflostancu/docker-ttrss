@@ -1,6 +1,14 @@
 #!/usr/bin/execlineb -P
 with-contenv
 
-cd /var/www/
+importas -D "" TTRSS_DB_HOST TTRSS_DB_HOST
+
+ifelse { s6-test -z ${TTRSS_DB_HOST} }
+{
+	foreground { echo "No database configured, skipping ttrss-init-db!" }
+	exit 1
+}
+
+execline-cd /var/www/
 s6-setuidgid nginx /usr/bin/php /usr/local/bin/ttrss-init-db.php
 
