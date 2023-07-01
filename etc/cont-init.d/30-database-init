@@ -2,5 +2,5 @@
 with-contenv
 
 cd /var/www/
-/usr/local/bin/ttrss-init-db.php
+s6-setuidgid nginx /usr/bin/php /usr/local/bin/ttrss-init-db.php
 

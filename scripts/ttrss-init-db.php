@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 // ttrss database initialization script
+chdir("/var/www");
 $confpath = '/var/www/config.php';
 $config = array();
 
@@ -33,7 +34,7 @@ try {
 }
 catch (PDOException $e) {
     echo 'Database table not found, applying schema... ' . PHP_EOL;
-    $schema = file_get_contents('schema/ttrss_schema_' . $config['DB_TYPE'] . '.sql');
+    $schema = file_get_contents('sql/' . $config['DB_TYPE'] . '/schema.sql');
     $schema = preg_replace('/--(.*?);/', '', $schema);
     $schema = preg_replace('/[\r\n]/', ' ', $schema);
     $schema = trim($schema, ' ;');
@@ -42,6 +43,9 @@ catch (PDOException $e) {
     }
     unset($pdo);
 }
+
+passthru('php update.php --update-schema=force-yes');
+
 // write config.php
 // $contents = file_get_contents($confpath) . "\n";
 // foreach ($config as $name => $value) {
