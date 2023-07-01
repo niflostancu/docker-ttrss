@@ -3,12 +3,11 @@ name: ttrss
 description: Self-hosted RSS reader
 type: application
 
-version: 0.2.0
+version: 0.3.0
 appVersion: git
 
 sources:
-  - https://github.com/niflostancu/docker-ttrss
-  - https://github.com/niflostancu/k8s-personal-nas
+  - https://github.com/niflostancu/ttrss-docker
 maintainers:
   - name: Stancu Florin
     email: niflostancu@gmail.com
