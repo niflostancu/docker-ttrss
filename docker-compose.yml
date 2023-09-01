@@ -3,9 +3,9 @@ services:
   ttrss:
     image: "niflostancu/ttrss"
     ports:
-      - "8000:80"
+      - "8080:80"
     environment:
-      TTRSS_SELF_URL_PATH: 'http://localhost:8000/'
+      TTRSS_SELF_URL_PATH: 'http://localhost:8000/rss/'
       TTRSS_DB_TYPE: mysql
       TTRSS_DB_HOST: mysql
       TTRSS_DB_PORT: 3306

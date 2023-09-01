@@ -38,4 +38,5 @@ EXPOSE 80
 # add config and init scripts
 ADD etc/ /etc/
 ADD scripts /usr/local/bin
+ADD config.docker.php /usr/local/share/ttrss/
 

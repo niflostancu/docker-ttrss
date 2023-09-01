@@ -61,11 +61,8 @@ spec:
 {{- if .Values.extraEnvironment }}
 {{ toYaml .Values.extraEnvironment | indent 12 }}
 {{- end }}
-          volumeMounts:
-          - name: config-server
-            mountPath: /etc/nginx/server.conf
-            subPath: server.conf
 {{- if .Values.extraVolumeMounts }}
+          volumeMounts:
 {{ toYaml .Values.extraVolumeMounts | indent 10 }}
 {{- end }}
           ports:
@@ -86,10 +83,6 @@ spec:
             periodSeconds: 15
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      volumes:
-        - name: config-server
-          configMap:
-            name: {{ include "ttrss.fullname" . }}
 
 {{- if .Values.extraVolumes }}
 {{ toYaml .Values.extraVolumes | indent 6 }}

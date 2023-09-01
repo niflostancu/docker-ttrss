@@ -2,7 +2,6 @@
 <?php
 // ttrss database initialization script
 chdir("/var/www");
-$confpath = '/var/www/config.php';
 $config = array();
 
 // path to ttrss
@@ -44,15 +43,10 @@ catch (PDOException $e) {
     unset($pdo);
 }
 
-passthru('php update.php --update-schema=force-yes');
+# copy config.php
+copy("/usr/local/share/ttrss/config.docker.php", "/var/www/config.php");
 
-// write config.php
-// $contents = file_get_contents($confpath) . "\n";
-// foreach ($config as $name => $value) {
-//     $cfg_key = 'TTRSS_' . $name;
-//     $contents .= "putenv(\"${cfg_key}=$value\");\n";
-// }
-// file_put_contents($confpath, $contents);
+passthru('php update.php --update-schema=force-yes');
 
 function env($name, $default = null)
 {
