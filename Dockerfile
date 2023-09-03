@@ -1,5 +1,5 @@
 # TinyTinyRSS (nginx based) image for personal cloud
-FROM niflostancu/server-base
+FROM niflostancu/server-base:s6lv2
 
 ARG TTRSS_VERSION="master"
 ARG TARGETPLATFORM
