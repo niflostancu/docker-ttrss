@@ -1,6 +1,6 @@
 # Docker image Makefile
 
-VERSION=$(shell cat VERSION)
+VERSION:=$(shell cat VERSION)
 PUSH?=
 ALL?=$(PUSH)
 LOAD?=$(if $(ALL),,1)

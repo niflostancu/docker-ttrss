@@ -1,0 +1,15 @@
+#!/command/execlineb -P
+with-contenv
+
+importas -D www-data CONT_USER CONT_USER
+importas -D "" TTRSS_DB_HOST TTRSS_DB_HOST
+
+ifelse { eltest -z ${TTRSS_DB_HOST} }
+{
+	foreground { echo "No database configured, skipping ttrss-init-db!" }
+	exit 1
+}
+
+execline-cd /var/www/
+s6-setuidgid ${CONT_USER} /usr/bin/php /usr/local/bin/ttrss-init-db.php
+

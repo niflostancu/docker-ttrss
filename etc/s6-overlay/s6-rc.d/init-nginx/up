@@ -1,5 +1,4 @@
-#!/usr/bin/execlineb -P
+#!/command/execlineb -P
 with-contenv
 
 /bin/bash /usr/local/bin/nginx-conf-init.sh
-

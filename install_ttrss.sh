@@ -67,10 +67,10 @@ for plugin in "${PLUGINS[@]}"; do
 		cp -rf "$_CLONE_DEST/$NAME"* "$_DEST/"
 	fi
 	ls -lh "$_DEST"
-
 done
 
 cd "$TTRSS_DEST"
 cp -f config.php-dist config.php
-chown nginx:nginx /var/www -R
+# change the default owner of www
+chown "$CONT_USER:$CONT_USER" /var/www -R
 
