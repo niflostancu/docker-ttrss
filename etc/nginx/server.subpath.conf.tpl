@@ -1,5 +1,11 @@
-root /var/www;
-index index.php;
+root /var/www/__404;
+
+location / {
+	return 302 $scheme://$http_host{{NGINX_SUBPATH}}/;
+}
+location = {{NGINX_SUBPATH}} {
+	return 302 $scheme://$http_host{{NGINX_SUBPATH}}/;
+}
 
 location {{NGINX_SUBPATH}} {
 	alias /var/www;
