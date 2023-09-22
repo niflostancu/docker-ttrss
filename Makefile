@@ -14,6 +14,7 @@ FULL_IMAGE_NAME=$(IMAGE_PREFIX)$(IMAGE_NAME)
 PLATFORMS=linux/amd64,linux/arm64
 BUILDX_ARGS?=
 BUILDX_ARGS+=$(if $(ALL),--platform $(PLATFORMS))
+BUILDX_ARGS += $(if $(V),--progress=plain)
 
 -include local.mk
 

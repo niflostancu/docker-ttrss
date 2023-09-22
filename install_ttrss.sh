@@ -1,12 +1,15 @@
 #!/bin/bash
 # Downloads and installs TinyTinyRSS and plugins
 set -e
+shopt -s extglob
 
 TTRSS_GIT_REPO=https://git.tt-rss.org/fox/tt-rss.git/
 TTRSS_DEST=/var/www
 PLUGINS=(
 	# "https://github.com/dasmurphy/tinytinyrss-fever-plugin/archive/master.tar.gz;plugins;fever"
 	"https://github.com/levito/tt-rss-feedly-theme.git#theme;name=feedly;branch=dist"
+	"https://github.com/ltguillaume/feedmei.git#theme;name=feedmei;match=themes.local/*;branch=main"
+	"https://github.com/ltguillaume/feedmei.git#plugin;name=feedmei;match=plugins.local/*/;branch=main"
 	"https://github.com/DigitalDJ/tinytinyrss-fever-plugin.git#plugin;name=fever"
 )
 
@@ -41,30 +44,43 @@ git clone "$TTRSS_GIT_REPO" "$TTRSS_DEST"
 for plugin in "${PLUGINS[@]}"; do
 	TYPE=
 	REPO=${plugin%%#*}
+	MATCH=
+	FOLDER_NAME=
 	CLONE_ARGS=()
+	TEMP_CLONE=
 	while IFS= read -r line; do
 		case $line in
 			plugin) TYPE=plugins; ;;
-			theme) TYPE=themes; ;;
+			theme) TYPE=themes; TEMP_CLONE=1; ;;
 			name=*) NAME=${line#*=}; ;;
+			foldername=*) FOLDER_NAME=${line#*=}; ;;
+			match=*) MATCH=${line#*=}; TEMP_CLONE=1; ;;
 			branch=*) CLONE_ARGS+=(-b "${line#*=}"); ;;
 		esac
 	done < <( parse_url_fragment "$plugin" )
 
 	# Download the plugin's archive
 	_DEST="${TTRSS_DEST}/${TYPE}"
-	_CLONE_DEST="$_DEST/${NAME}"
-	if [[ "$TYPE" == "themes" ]]; then
-		# use a separate subdir for cloning themes
-		_CLONE_DEST="${_DEST}/_${NAME}.git"
+	if [[ -n "$TEMP_CLONE" ]]; then
+		# use a temporary subdir for cloning
+		_CLONE_DEST="/tmp/ttrss__${NAME}.git"
+	else
+		[[ -n "$FOLDER_NAME" ]] || FOLDER_NAME="$NAME"
+		_CLONE_DEST="$_DEST/${FOLDER_NAME}"
 	fi
 	echo "Cloning $NAME to ${_CLONE_DEST}..."
 	mkdir -p "$(dirname "$_CLONE_DEST")"
-	git clone "${CLONE_ARGS[@]}" "$REPO" "$_CLONE_DEST"
-
-	if [[ "$TYPE" == "themes" ]]; then
-		# copy the theme's files (everything prefixed by $NAME) to themes/ dir
-		cp -rf "$_CLONE_DEST/$NAME"* "$_DEST/"
+	[[ -d "$_CLONE_DEST/.git" ]] || git clone "${CLONE_ARGS[@]}" "$REPO" "$_CLONE_DEST"
+	# copy files from temporary clone dir
+	if [[ -n "$TEMP_CLONE" ]]; then
+		if [[ -n "$FOLDER_NAME" ]]; then
+			_DEST="$_DEST/$FOLDER_NAME"
+		fi
+		mkdir -p "$_DEST"
+		# match & copy files to destination dir
+		[[ -n "$MATCH" ]] || MATCH="$NAME*"
+		COPY_FILES=("$_CLONE_DEST/"$MATCH)
+		cp -rf "${COPY_FILES[@]}" "$_DEST/"
 	fi
 	ls -lh "$_DEST"
 done
