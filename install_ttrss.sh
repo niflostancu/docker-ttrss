@@ -8,6 +8,7 @@ TTRSS_DEST=/var/www
 PLUGINS=(
 	# "https://github.com/dasmurphy/tinytinyrss-fever-plugin/archive/master.tar.gz;plugins;fever"
 	"https://github.com/levito/tt-rss-feedly-theme.git#theme;name=feedly;branch=dist"
+	"https://github.com/DIYgod/ttrss-theme-rsshub.git#theme;name=rsshub;match=dist/rsshub.css;branch=master"
 	"https://github.com/ltguillaume/feedmei.git#theme;name=feedmei;match=themes.local/*;branch=main"
 	"https://github.com/ltguillaume/feedmei.git#plugin;name=feedmei;match=plugins.local/*/;branch=main"
 	"https://github.com/DigitalDJ/tinytinyrss-fever-plugin.git#plugin;name=fever"
