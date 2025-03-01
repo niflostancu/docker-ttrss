@@ -12,12 +12,12 @@ RUN getent group "$CONT_USER" &>/dev/null || groupadd -g "$CONT_GID" "$CONT_USER
 # dependencies
 RUN echo "**** installing dependencies ****" && apk --update upgrade && \
 	apk --update --no-cache add \
-		nginx php81 php81-fpm php81-cli \
-		php81-pdo php81-gd php81-pgsql php81-pdo_pgsql php81-pdo_mysql \
-		php81-mbstring php81-intl php81-xml php81-curl php81-session \
-		php81-tokenizer php81-dom php81-fileinfo php81-ctype php81-json \
-		php81-iconv php81-pcntl php81-posix php81-zip php81-exif \
-		php81-openssl git ca-certificates && \
+		nginx php83 php83-fpm php83-cli \
+		php83-pdo php83-gd php83-pgsql php83-pdo_pgsql php83-pdo_mysql \
+		php83-mbstring php83-intl php83-xml php83-curl php83-session \
+		php83-tokenizer php83-dom php83-fileinfo php83-ctype php83-json \
+		php83-iconv php83-pcntl php83-posix php83-zip php83-exif \
+		php83-openssl git ca-certificates && \
 	apk add --no-cache --virtual .build-dependencies curl tar
 
 ADD install_ttrss.sh /tmp/install_ttrss.sh
