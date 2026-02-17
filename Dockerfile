@@ -18,6 +18,7 @@ RUN echo "**** installing dependencies ****" && apk --update upgrade && \
 		php83-tokenizer php83-dom php83-fileinfo php83-ctype php83-json \
 		php83-iconv php83-pcntl php83-posix php83-zip php83-exif \
 		php83-openssl git ca-certificates && \
+	ln -s /usr/bin/php83 /usr/bin/php && \
 	apk add --no-cache --virtual .build-dependencies curl tar
 
 ADD install_ttrss.sh /tmp/install_ttrss.sh
