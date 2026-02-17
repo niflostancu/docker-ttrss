@@ -4,7 +4,8 @@ services:
     ports:
       - "8080:80"
     environment:
-      TTRSS_SELF_URL_PATH: 'http://localhost:8000/rss/'
+      TTRSS_SELF_URL_PATH: 'http://localhost:8080/'
+      # NGINX_SUBPATH: "/rss"
       TTRSS_DB_TYPE: pgsql
       TTRSS_DB_HOST: db
       TTRSS_DB_PORT: 5432
