@@ -12,6 +12,7 @@ PLUGINS=(
 	"https://github.com/ltguillaume/feedmei.git#theme;name=feedmei;match=themes.local/*;branch=main"
 	"https://github.com/ltguillaume/feedmei.git#plugin;name=feedmei;match=plugins.local/*/;branch=main"
 	"https://github.com/DigitalDJ/tinytinyrss-fever-plugin.git#plugin;name=fever"
+	"https://github.com/eric-pierce/freshapi.git#plugin;name=freshapi"
 )
 
 # workaround for arm/v7 OOM
@@ -85,6 +86,10 @@ for plugin in "${PLUGINS[@]}"; do
 	fi
 	ls -lh "$_DEST"
 done
+
+# uncomment for testing (during development)
+#mkdir -p "/var/www/test"
+#echo "<?php phpinfo(); " > /var/www/test/phpinfo.php
 
 cd "$TTRSS_DEST"
 cp -f config.php-dist config.php
