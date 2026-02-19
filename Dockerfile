@@ -29,9 +29,10 @@ RUN echo "**** installing ttrss and plugins ****" && \
 	rm -rf /tmp/*
 
 # environments and their defaults
-ENV TTRSS_SELF_URL_PATH http://localhost/
-ENV TTRSS_DB_NAME ttrss
-ENV TTRSS_DB_USER ttrss
+ENV TTRSS_SELF_URL_PATH=http://localhost/ \
+	TTRSS_DB_NAME=ttrss \
+	TTRSS_DB_USER=ttrss \
+	S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000
 
 # expose nginx HTTP
 EXPOSE 80
