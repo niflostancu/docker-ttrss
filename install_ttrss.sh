@@ -7,7 +7,7 @@ TTRSS_GIT_REPO=https://git.tt-rss.org/fox/tt-rss.git/
 TTRSS_DEST=/var/www
 PLUGINS=(
 	# "https://github.com/dasmurphy/tinytinyrss-fever-plugin/archive/master.tar.gz;plugins;fever"
-	"https://github.com/levito/tt-rss-feedly-theme.git#theme;name=feedly;branch=dist"
+	"https://github.com/TonyRL/tt-rss-feedly-theme.git#theme;name=feedly;branch=dist"
 	"https://github.com/DIYgod/ttrss-theme-rsshub.git#theme;name=rsshub;match=dist/rsshub.css;branch=master"
 	"https://github.com/ltguillaume/feedmei.git#theme;name=feedmei;match=themes.local/*;branch=main"
 	"https://github.com/ltguillaume/feedmei.git#plugin;name=feedmei;match=plugins.local/*/;branch=main"
