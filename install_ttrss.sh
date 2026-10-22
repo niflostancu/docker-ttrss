@@ -3,7 +3,7 @@
 set -e
 shopt -s extglob
 
-TTRSS_GIT_REPO=https://git.tt-rss.org/fox/tt-rss.git/
+TTRSS_GIT_REPO=https://github.com/tt-rss/tt-rss
 TTRSS_DEST=/var/www
 PLUGINS=(
 	# "https://github.com/dasmurphy/tinytinyrss-fever-plugin/archive/master.tar.gz;plugins;fever"
@@ -93,6 +93,6 @@ done
 
 cd "$TTRSS_DEST"
 cp -f config.php-dist config.php
+rm -rf /var/www/.git
 # change the default owner of www
 chown "$CONT_USER:$CONT_USER" /var/www -R
-
